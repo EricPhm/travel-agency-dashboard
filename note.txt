@@ -1,0 +1,29 @@
+using the React Router Compiler setup, and your app entry points are clearly defined:
+
+    entry.client.tsx ← This is the client-side entry file (for browser hydration or rendering).
+
+    entry.server.tsx ← This is the server-side entry file (for SSR/streaming).
+
+    root.tsx ← This is the root route component (like the App in older setups).
+
+    instrument.server.mjs ← This is likely where you initialize Sentry or other server tools.
+
+***DO NOT NEED instrument.server.mjs anymore because I directly calling Sentry.init(...) in entry.client.tsx and entry.server.tsx.
+
+
+
+Overview of Navigation Flow
+    1. User visits /dashboard route
+
+    2. clientLoader() runs to check authentication.
+
+    3. If authenticated and admin: show AdminLayout.
+
+    4. AdminLayout renders <NavItems /> inside sidebar (<SidebarComponent>)
+
+    5. User clicks a NavItem → triggers <NavLink to="..." />
+
+    6. React Router changes the URL + renders the page via <Outlet />.
+
+
+    npm install @google/generative-ai

@@ -1,13 +1,17 @@
 import React from "react";
 import { cn } from "lib/utils";
-import { useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
+import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 
+// optional for ctaText and ctaUrl for header in trips.tsx
 interface Props {
     title: string;
     description: string;
+    ctaText?: string;
+    ctaUrl?: string;
 }
 
-const Header = ({ title, description }: Props) => {
+const Header = ({ title, description, ctaText, ctaUrl }: Props) => {
     // to check the path name
     const location = useLocation();
 
@@ -37,6 +41,24 @@ const Header = ({ title, description }: Props) => {
                     {description}
                 </p>
             </article>
+            {/* A button that redirect to /trips/create */}
+            {ctaText && ctaUrl && (
+                <Link to={ctaUrl}>
+                    <ButtonComponent
+                        type="button"
+                        className="button-class !h-11 !w-full md:w-[240px]"
+                    >
+                        <img
+                            src="../public/assets/icons/plus.svg"
+                            alt="plus"
+                            className="size-5"
+                        />
+                        <span className="p-16-semibold text-white">
+                            {ctaText}
+                        </span>
+                    </ButtonComponent>
+                </Link>
+            )}
         </header>
     );
 };

@@ -7,14 +7,16 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
+// to use in constant file for users
 export const formatDate = (dateString: string): string => {
     return dayjs(dateString).format("MMMM DD, YYYY");
 };
 
+// takes in markdown text and turn it into json
 export function parseMarkdownToJson(markdownText: string): unknown | null {
     const regex = /```json\n([\s\S]+?)\n```/;
     const match = markdownText.match(regex);
-
+    // run json.parse()
     if (match && match[1]) {
         try {
             return JSON.parse(match[1]);
@@ -25,6 +27,17 @@ export function parseMarkdownToJson(markdownText: string): unknown | null {
     }
     console.error("No valid JSON found in markdown text.");
     return null;
+}
+
+export function extractJson(raw: string): string {
+    // Match ```json …``` or ``` …```
+    const fenceRegex = /```(?:json)?\n([\s\S]*?)```/i;
+    const match = raw.match(fenceRegex);
+
+    // If we found a fenced block, use its contents; otherwise use the entire raw string
+    const payload = match ? match[1] : raw;
+
+    return payload.trim();
 }
 
 export function parseTripData(jsonString: string): Trip | null {
