@@ -95,18 +95,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         }
 
         const imageResponse = await fetch(
-            `https://api.unsplash.com/search/photo?query=${country} ${interest} ${travelStyle}&client_id=${unsplashApiKey} `
+            `https://api.unsplash.com/search/photos?query=${country} ${interest} ${travelStyle}&client_id=${unsplashApiKey}`
         );
+        console.log(imageResponse);
 
-        // const imageUrls = (await imageResponse.json()).results
-        //     .slice(0, 3)
-        //     .map((result: any) => result.urls?.regular || null);
-        const rawImages = await imageResponse.json();
-        const imageUrls = Array.isArray(rawImages?.results)
-            ? rawImages.results
-                  .slice(0, 3)
-                  .map((img: any) => img.urls?.regular ?? null)
-            : [];
+        const imageUrls = (await imageResponse.json()).results
+            .slice(0, 3)
+            .map((result: any) => result.urls?.regular || null);
 
         const result = await database.createDocument(
             appwriteConfig.databaseId,

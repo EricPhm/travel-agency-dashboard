@@ -40,11 +40,16 @@ export function extractJson(raw: string): string {
     return payload.trim();
 }
 
-export function parseTripData(jsonString: string): Trip | null {
-    try {
-        const data: Trip = JSON.parse(jsonString);
+export function parseTripData(
+    jsonString: string | undefined | null
+): Trip | null {
+    if (!jsonString || typeof jsonString !== "string") {
+        console.warn("Invalid or missing trip data:", jsonString);
+        return null;
+    }
 
-        return data;
+    try {
+        return JSON.parse(jsonString) as Trip;
     } catch (error) {
         console.error("Failed to parse trip data:", error);
         return null;
